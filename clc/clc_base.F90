@@ -695,7 +695,7 @@
    _SET_DD_(self%id_nitrate,self%id_nitrate,c*uptake*ni/(ni+am))
    if (self%use_ammonium) then
      _SET_DD_(self%id_ammonium,self%id_ammonium,c*uptake*am/(ni+am))
-
+   end if
    ! fixation
    _SET_DD_SYM_(self%id_g,self%id_c,self%growth_factor*c*fixation)
    _SET_DD_(self%id_g,self%id_g,c*self%m*fixation)
