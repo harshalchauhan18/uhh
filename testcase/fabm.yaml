@@ -1,0 +1,304 @@
+instances:
+
+  nutrient:
+    model: uhh_ergom_split_base
+    parameters: 
+      sfl_po: 0.0312   #  surface exchage rate
+      sfl_am: 0.4608 # surface exchage rate
+      sfl_ni:  0.5400 #! surface exchage rate
+      a0: 31.25 #!surface flux
+      a1:  14.603 #!surface flux
+      a2: 0.4025  #!surface flux
+      pvel: 5.0 #  piston velocity md-1
+      w_de: -3.0 # detritus sinking velocity d-1
+      kc: 0.03 # shelf shading
+      lan: 0.024 # nitrification constant d-1
+      oan: 0.01 # oxygen parameter
+      beta_an: 0.11 # temperature control /C
+      anmx: 0.05 # anammox rate d-1
+      lda: 0.005 # detritus mineralization constant d-1
+      tda: 13.0 # temperature control
+      beta_da: 20.0 # temperature control
+      sr: 0.0625 #!redfield ratio(p/n)
+      s1: 5.3 # reduced nitrate/oxydized deritus
+      s2: 6.625 # oxygen demand/recycled nitrigen
+      s3: 8.625 #!oxygen production related to N
+      s4: 0.67 #!  nitrification
+      fluff: .false.  #!fluffy layer
+      lds: 3.5 # sedimenation rate md-1
+      lsd: 25.0 # resuspension rate d-1
+      tau_crit: 0.07 # critical stress
+      lsa: 0.0001 #  sediment mineralization constant d-1
+      bsa: 0.15 #  temperature control
+      ph1: 0.15 # release of phosphate
+      ph2: 0.10 # release of phosphate
+    initialization:
+      det: 5.0
+      amm: 0.1
+      nit: 5.0
+      pho: 2.0
+      oxy: 100.0      
+    coupling: 
+   
+  diatoms:
+    model: uhh_diatoms
+    parameters:
+      mumax:  0.95 #!0.9 !0.4 maximum growth rat
+      vmort: 0.02 #!0.04 !0.03 mortality rate of vegetative cells
+      rmort: 0.02 #!0.03 mortality rate of resting cells
+      rkn: 0.50 #!0.5 !1.0 half-saturation constant
+      rdepo:  0.0000056 #!5.6e-6 0.0029 deposion rate
+      sr: 0.0625
+      trate_veg_res: 0.04 #!0.2 !0.04 maximum transition rate d-1
+      trate_res_veg: 0.20 #!0.2 !0.02 maximum transition rate d-1
+      w_dia: -0.12 #!-0.15 !-0.25 !0.0   sinking rate *******
+      rkc: 0.03 #!0.07 self-shading
+      alpha: 0.24 #!0.58 !0.30 !0.15 initial slope of P-I curve
+      use_mean_growth: .false.
+      mdt: 3600.0 #!3600. !1800
+    initialization:
+      veg: 0.01
+      res: 0.01
+    coupling:
+      ammonium_target: nutrient/amm
+      nitrate_target: nutrient/nit
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+      
+  dinoflag:
+    model: uhh_dinoflag
+    parameters:
+      mumax: 0.40 # !0.4 !0.4 maximum growth rate
+      vmort: 0.02 #!0.03 !0.002 mortality rate of ger/veg/gam
+      rkn: 0.48  # !0.5 half-saturation constant
+      rdepo:  0.0000079 # !5.6e-6 !1.6e-5 deposion rate
+      trate_veg_gam: 0.015 #!0.015 maximum transition rate d-1
+      trate_gam_res: 0.06 #!0.06 maximum transition rate d-1
+      trate_res_ger: 0.05 #!0.05 maximum transition rate d-1
+      trate_ger_veg: 0.30 #!0.30 maximum transition rate d-1
+      gr_crit: 0.000000375  # !3.75e-7 !no used
+      w_veg: 0.0  # !0.0 sinking rate
+      w_gam: 0.0 #!0.0 sinking rate
+      w_res: -8.0 #!-8.0 sinking rate
+      w_ger: 8.0 #!8.0 sinking rate
+      rkc: 0.03 #!0.07 shelf-shading
+      alpha_dfl: 0.20 #0.675 # !0.20 !0.64 !0.36 !0.18 initial slope of P-I curve
+      l_crit: 0.58 #0.64  #  !0.64 !0.54 critical value of light
+      tmat_crit: 210.0 #!190.0 !100.0 !120.0 critical value of time maturation
+      tmat_initial: 210.0 #!170.0
+      sr: 0.0625 #!0.0625
+      s2: 6.625
+      s3: 8.625
+      mdt: 3600.0 # !3600. !1800 !360
+      use_doy_for_maturation: .false.
+      doy_max: 100.0 #!100.0
+    initialization:
+      veg: 0.01
+      gam: 0.01
+      res: 0.01
+      ger: 0.01
+    coupling:
+      ammonium_target: nutrient/amm
+      nitrate_target: nutrient/nit
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+      
+  clc_veg: 
+    model: uhh_clcveg
+    parameters:
+      w:  0.10368
+      kc:  0.03
+      Qc:  5.5
+      kN: 0.3
+      E_storage_capacity: 5.5
+      tscale: 0.0000025 #2.5e-6
+      trange: 0.05
+      q_min:  0.5
+      scale: 8.0
+      rmatscale: 45.0
+      alpha: 0.00000047 #4.7e-7
+      omega0:  0.000003866 #3.866e-6
+      s2: 6.625
+      s3: 8.625
+      sr: 0.0625
+      #use_ph: .false.
+      fpH_const: 1.0
+      m: 3.0
+      depo: 0.0
+      fcy2: 4.0 
+      n_fixation: .false.
+      uptake_factor: 4.0
+      growth_factor: 4.0
+      lightcapture_factor: 5.0
+      mortality_rate: 0.013 #! mort [1/d] 
+      lifestage_name: vegetative_cells
+      next_in_cycle: heterocysts
+    initialization:
+      C: 0.01
+      G: 0.0075
+      S: 0.0075
+    coupling:
+      next_C: clc_het/C      
+      next_G: clc_het/G
+      next_S: clc_het/S  
+      ammonium_target: nutrient/amm
+      nitrate_target: nutrient/nit
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+      
+  clc_het:
+    model: uhh_clchet
+    parameters:
+      w     : 0.10368
+      kc      : 0.03
+      Qc    : 5.5
+      kN     :  0.3
+      E_storage_capacity: 5.5
+      tscale     : 0.0000025 # 2.5e-6
+      trange    :  0.05
+      e_min  :  0.5
+      scale    :  8.0
+      rmatscale:  45.0
+      alpha   : 0.00000047 # 4.7e-7
+      omega0   :  0.000003866 #3.866e-6
+      n_fixation  :  .true.
+      #use_ph       :  .false.
+      fpH_const: 1.0
+      m         :  3.0
+      depo: 0.0
+      fcy2         :  4.0
+      uptake_factor : 0.0
+      growth_factor  :  1.0
+      lightcapture_factor :  5.0
+      mortality_rate :  0.013 #! mort [1/d]   
+      sr: 0.0625
+      s2: 6.625
+      s3: 8.625
+      lifestage_name: heteocysts
+      next_in_cycle: akinetes
+    initialization:
+      C: 0.01
+      G: 0.0075
+      S: 0.0025
+    coupling:        
+      next_C: clc_aki/C  
+      next_G: clc_aki/G
+      next_S: clc_aki/S   
+      ammonium_target: nutrient/amm
+      nitrate_target: nutrient/nit
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+  
+  clc_aki:
+    model: uhh_clcaki
+    parameters:
+      w              :  -10.368
+      kc             : 0.03
+      Qc             : 5.5
+      kN             : 0.3
+      E_storage_capacity : 5.5
+      tscale         : 0.0000025 #2.5e-6
+      trange         : 0.05
+      q_max          : 0.5
+      scale          : 8.0
+      rmatscale      : 45.0
+      alpha          : 0.00000047 #4.7e-7
+      omega0         : 0.0000028 #2.8e-6
+      fpH_const      : 1.0
+      m: 3.0
+      depo           : 0.00000001 #0.1e-8
+      fcy2: 4.0
+      n_fixation  :  .false.
+      s2             : 6.625
+      sr: 0.0625
+      s3: 8.625
+      n_fixation     : .false.
+      uptake_factor  : 2.0
+      growth_factor  : 0.0
+      lightcapture_factor : 3.0
+      mortality_rate:  0.00013 # ! mort [1/d]   
+      lifestage_name: akinetes
+      next_in_cycle: recruitive_cells 
+    initialization:
+      C: 0.01
+      G: 0.0025
+      S: 0.0025
+    coupling:
+      next_C: clc_rec/C  
+      next_G: clc_rec/G
+      next_S: clc_rec/S  
+      ammonium_target: nutrient/amm
+      nitrate_target: nutrient/nit
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+  
+  clc_rec:
+    model: uhh_clcrec
+    parameters:   
+      w              : 1.728
+      kc             : 0.03
+      Qc             : 5.5
+      kN             : 0.3
+      E_storage_capacity : 5.5
+      tscale         : 0.0000025 #2.5e-6
+      trange         : 0.05
+      e_max          : 0.5
+      scale          : 8.0
+      rmatscale      : 45.0
+      alpha          : 0.00000047 #4.7e-7
+      omega0         : 0.0000028 #2.8e-6
+      fpH_const      : 1.0
+      m: 3.0
+      depo: 0.0
+      fcy2: 4.0
+      sr: 0.0625
+      s3: 8.625
+      s2             : 6.625
+      n_fixation     : .false.
+      uptake_factor  : 4.0
+      growth_factor  :  0.0
+      lightcapture_factor : 5.0
+      mortality_rate : 0.013 #! mort [1/d]    
+      lifestage_name: recruitive_cells
+      next_in_cycle: vegetative_cells 
+    initialization:
+      C: 0.01
+      G: 0.0025
+      S: 0.0075
+    coupling:
+      next_C: clc_veg/C      
+      next_G: clc_veg/G
+      next_S: clc_veg/S   
+      ammonium_target: nutrient/amm
+      nitrate_target: nutrient/nit
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+  zoo:
+    model: uhh_ergom_split_zoo      
+    parameters:
+      zoo0: 0.0045  #background_concentration: 0.0045 #!0.0225
+      iv: 0.25 #!0.25 !1.2 !0.24444444 Ivlev consant
+      gmax_dia: 0.4 #!0.5 -1.0 grazing on diatoms
+      gmax_din: 0.5 #!0.5 0.03 grazing on dinoflagellates
+      p_to_n: 0.0625
+      s2: 6.625
+      s3: 8.625
+      topt: 20.0 #!20.0 optimum temperature
+      mortality_rate: 0.13 #!0.1333333333 !0.02 !0.6
+      excretion_rate: 0.07 #!0.0666666666 !0.01 0.3
+      slopf: 1.0 #!feeding factor 0~1 1=no sloppy feeding  
+    initialization:
+      zoo: 0.1
+    coupling:
+      ammonium_target: nutrient/amm
+      phosphate_target: nutrient/pho
+      mortality_target: nutrient/det
+      oxygen_target: nutrient/oxy
+      diatoms_target: diatoms/veg
+      dinoflagellates_target: dinoflag/veg
