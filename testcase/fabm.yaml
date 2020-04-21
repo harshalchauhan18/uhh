@@ -2,7 +2,7 @@ instances:
 
   nutrient:
     model: uhh_ergom_split_base
-    parameters: 
+    parameters:
       sfl_po: 0.0312   # 0.0253 #0.0312 #!0.0253 !0.0202 !0.0265 !0.0045 !0.0015 !0.0025 !0.055 !0.0015 surface exchage rate
       sfl_am: 0.4608 #0.3600 #0.4608 #!0.3600 !0.3840 !0.1848 !0.0360 !0.0060 !0.0900 !0.360 !0.07 surface exchage rate
       sfl_ni:  0.5400 #!0.4500 !0.4800 !0.2400 !0.0450 !0.0083 !0.1100 !0.450 !0.09 surface exchage rate
