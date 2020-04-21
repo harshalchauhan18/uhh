@@ -1,45 +1,60 @@
 instances:
+ 
+  pml:
+    model: pml_carbonate
+    parameters:
+      alk_param: .true. # Parameterize alkalintiy as linear function of salinity
+      alk_offset: 1470.0  # Beldowski et al 2010
+      alk_slope:  25.3    # Beldowski et al 2010
+    initialization:
+      dic: 1500.0
 
   nutrient:
     model: uhh_ergom_split_base
     parameters: 
-      sfl_po: 0.0312   #  surface exchage rate
-      sfl_am: 0.4608 # surface exchage rate
-      sfl_ni:  0.5400 #! surface exchage rate
+      sfl_po: 0.0312   # 0.0253 #0.0312 #!0.0253 !0.0202 !0.0265 !0.0045 !0.0015 !0.0025 !0.055 !0.0015 surface exchage rate
+      sfl_am: 0.4608 #0.3600 #0.4608 #!0.3600 !0.3840 !0.1848 !0.0360 !0.0060 !0.0900 !0.360 !0.07 surface exchage rate
+      sfl_ni:  0.5400 #!0.4500 !0.4800 !0.2400 !0.0450 !0.0083 !0.1100 !0.450 !0.09 surface exchage rate
       a0: 31.25 #!surface flux
       a1:  14.603 #!surface flux
       a2: 0.4025  #!surface flux
-      pvel: 5.0 #  piston velocity md-1
-      w_de: -3.0 # detritus sinking velocity d-1
-      kc: 0.03 # shelf shading
-      lan: 0.024 # nitrification constant d-1
-      oan: 0.01 # oxygen parameter
-      beta_an: 0.11 # temperature control /C
-      anmx: 0.05 # anammox rate d-1
-      lda: 0.005 # detritus mineralization constant d-1
-      tda: 13.0 # temperature control
-      beta_da: 20.0 # temperature control
+      pvel: 5.0 #!5.0  piston velocity md-1
+      w_de: -3.0 #!-1.2e-04 !-3.0 detritus sinking velocity d-1
+      kc: 0.03 #!0.03 !0.07 !0.03 shelf shading
+      #tbg: 14.0 #!14.0 !16.0 temperature background
+      #beta_bg: 1.0 #!1.0 temperature background
+      #topt: 20.0 #!20.0 optimum temperature
+      lan: 0.024 #!0.012 !0.036 !0.06 !0.1 nitrification constant d-1
+      oan: 0.01 #!0.01 oxygen parameter
+      beta_an: 0.11 #!0.11 !0.11 !0.11 temperature control /C
+      anmx: 0.0 #0.05 #!0.05 anammox rate d-1
+      lda: 0.005 #!0.006 !0.003 detritus mineralization constant d-1
+      tda: 13.0 #!13.0 temperature control
+      beta_da: 20.0 #!20.0 temperature control
       sr: 0.0625 #!redfield ratio(p/n)
-      s1: 5.3 # reduced nitrate/oxydized deritus
-      s2: 6.625 # oxygen demand/recycled nitrigen
+      s1: 5.3 #!5.3 !5.3 !reduced nitrate/oxydized deritus
+      s2: 6.625 #!oxygen demand/recycled nitrigen
       s3: 8.625 #!oxygen production related to N
-      s4: 0.67 #!  nitrification
+      s4: 0.67 #!0.67 !1.5 !2.0  nitrification
       fluff: .false.  #!fluffy layer
-      lds: 3.5 # sedimenation rate md-1
-      lsd: 25.0 # resuspension rate d-1
-      tau_crit: 0.07 # critical stress
-      lsa: 0.0001 #  sediment mineralization constant d-1
-      bsa: 0.15 #  temperature control
-      ph1: 0.15 # release of phosphate
-      ph2: 0.10 # release of phosphate
+      #fl_initial: 0.0
+      lds: 3.5 #!0.07 3.5 0.0000405 sedimenation rate md-1
+      lsd: 25.0 #!0.50 !25.0 resuspension rate d-1
+      tau_crit: 0.07 #!0.07 0.7 critical stress
+      lsa: 0.0001 # 0.0001 #!0.002 0.001 0.0000000116 sediment mineralization constant d-1
+      bsa: 0.15 #!0.15  temperature control
+      ph1: 0.15 #!0.15 release of phosphate
+      ph2: 0.10 #!0.1 release of phosphate
     initialization:
       det: 5.0
       amm: 0.1
       nit: 5.0
       pho: 2.0
-      oxy: 100.0      
+      oxy: 100.0    
+      #flf: 0.0  
     coupling: 
-   
+      dic: pml/dic
+
   diatoms:
     model: uhh_diatoms
     parameters:
@@ -49,6 +64,8 @@ instances:
       rkn: 0.50 #!0.5 !1.0 half-saturation constant
       rdepo:  0.0000056 #!5.6e-6 0.0029 deposion rate
       sr: 0.0625
+      #s2: 6.625
+      #s3: 8.625
       trate_veg_res: 0.04 #!0.2 !0.04 maximum transition rate d-1
       trate_res_veg: 0.20 #!0.2 !0.02 maximum transition rate d-1
       w_dia: -0.12 #!-0.15 !-0.25 !0.0   sinking rate *******
@@ -65,7 +82,7 @@ instances:
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
-      
+      dic: pml/dic
   dinoflag:
     model: uhh_dinoflag
     parameters:
@@ -104,7 +121,8 @@ instances:
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
-      
+      dic: pml/dic
+
   clc_veg: 
     model: uhh_clcveg
     parameters:
@@ -116,6 +134,11 @@ instances:
       tscale: 0.0000025 #2.5e-6
       trange: 0.05
       q_min:  0.5
+      #e_max: 1.0
+      #e_min: 0.0
+      #q_max: 1.0
+      #Sflux_per_Cflux: 0.5 #1.0
+      #Gflux_per_Cflux: 1.0
       scale: 8.0
       rmatscale: 45.0
       alpha: 0.00000047 #4.7e-7
@@ -143,11 +166,14 @@ instances:
       next_C: clc_het/C      
       next_G: clc_het/G
       next_S: clc_het/S  
+      #lifestage_name: vegetative_cells
+      #next_in_cycle: heterocysts
       ammonium_target: nutrient/amm
       nitrate_target: nutrient/nit
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
+      dic: pml/dic 
       
   clc_het:
     model: uhh_clchet
@@ -159,7 +185,12 @@ instances:
       E_storage_capacity: 5.5
       tscale     : 0.0000025 # 2.5e-6
       trange    :  0.05
+      #e_max: 1.0
+      #q_max: 1.0
+      #q_min: 0.0
       e_min  :  0.5
+      #Sflux_per_Cflux: 1.0
+      #Gflux_per_Cflux: 0.5 #1.0
       scale    :  8.0
       rmatscale:  45.0
       alpha   : 0.00000047 # 4.7e-7
@@ -192,6 +223,7 @@ instances:
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
+      dic: pml/dic
   
   clc_aki:
     model: uhh_clcaki
@@ -204,6 +236,11 @@ instances:
       tscale         : 0.0000025 #2.5e-6
       trange         : 0.05
       q_max          : 0.5
+      #e_max: 1.0
+      #e_min: 0.0
+      #q_min: 0.0
+      #Sflux_per_Cflux: 1.5 #1.0
+      #Gflux_per_Cflux: 1.0
       scale          : 8.0
       rmatscale      : 45.0
       alpha          : 0.00000047 #4.7e-7
@@ -236,6 +273,7 @@ instances:
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
+      dic: pml/dic   
   
   clc_rec:
     model: uhh_clcrec
@@ -248,6 +286,11 @@ instances:
       tscale         : 0.0000025 #2.5e-6
       trange         : 0.05
       e_max          : 0.5
+      #e_min: 0.0
+      #q_max: 1.0
+      #q_min: 0.0
+      #Sflux_per_Cflux: 1.0
+      #Gflux_per_Cflux: 1.5 #1.0
       scale          : 8.0
       rmatscale      : 45.0
       alpha          : 0.00000047 #4.7e-7
@@ -279,26 +322,34 @@ instances:
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
+      dic: pml/dic
   zoo:
-    model: uhh_ergom_split_zoo      
-    parameters:
+    model: uhh_ergom_split_zoo       
+    parameters: 
+    # zoo_initial: 0.1 #!0.0
       zoo0: 0.0045  #background_concentration: 0.0045 #!0.0225
       iv: 0.25 #!0.25 !1.2 !0.24444444 Ivlev consant
       gmax_dia: 0.4 #!0.5 -1.0 grazing on diatoms
+      #gmax_fla: 0.5 #!0.5 0.03 not including grazing on flagellates
       gmax_din: 0.5 #!0.5 0.03 grazing on dinoflagellates
+      #gmax_cya: 0.25 #!1.0 not feeding grazing on cyanobacteria
       p_to_n: 0.0625
       s2: 6.625
       s3: 8.625
       topt: 20.0 #!20.0 optimum temperature
       mortality_rate: 0.13 #!0.1333333333 !0.02 !0.6
       excretion_rate: 0.07 #!0.0666666666 !0.01 0.3
-      slopf: 1.0 #!feeding factor 0~1 1=no sloppy feeding  
+      slopf: 1.0 #!feeding factor 0~1 1=no sloppy feeding   
     initialization:
       zoo: 0.1
     coupling:
       ammonium_target: nutrient/amm
+      #nitrate_target: nutrient/nit
       phosphate_target: nutrient/pho
       mortality_target: nutrient/det
       oxygen_target: nutrient/oxy
+      dic: pml/dic
       diatoms_target: diatoms/veg
+      #flagellates_target: uhh_ergom_split_flagellates_fla
       dinoflagellates_target: dinoflag/veg
+      
